@@ -136,7 +136,7 @@ class Myid {
                 response3.data.response_id
               }', '${passport}','${
                 response3.data.comparison_value
-              }','${JSON.stringify(response3.data.profile)}')`,
+              }','${JSON.stringify(response3.data.profile).replaceAll(`\^`,"").replaceAll(`\\`,"")}')`,
               function (err, results, fields) {
                 if (err) {
                   resolve(null);
