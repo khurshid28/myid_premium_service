@@ -78,7 +78,7 @@ class Myid {
           .catch((err) => {
             return err.response;
           });
-
+          console.log(">response 2 >>",response2);
         let url3 = `${process.env.FACE_URL}authentication/simple-inplace-authentication-request-status?job_id=${response2.data["job_id"]}`;
         console.log(JSON.stringify(url3));
         let response3 = await axios
@@ -104,7 +104,7 @@ class Myid {
             return err.response;
           });
 
-          console.log(">response 3 >>",response3);
+         
         while (response3.status != 200) {
           response3 = await axios
             .post(
