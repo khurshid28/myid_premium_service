@@ -101,7 +101,7 @@ class Myid {
           )
           .then((r) => r)
           .catch((err) => {
-            throw err;
+            return err.response;
           });
         while (response3.status != 200) {
           response3 = await axios
