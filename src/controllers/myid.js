@@ -127,7 +127,7 @@ class Myid {
               throw err;
             });
         }
-
+        console.log(response3.data);
         if (response3.data.profile != null && response3.data.result_code != 3) {
           let userMyIdData = await new Promise((resolve, reject) => {
             db.query(
