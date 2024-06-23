@@ -103,6 +103,8 @@ class Myid {
           .catch((err) => {
             return err.response;
           });
+
+          console.log(">response 3 >>",response3);
         while (response3.status != 200) {
           response3 = await axios
             .post(
