@@ -78,7 +78,7 @@ class Myid {
           .catch((err) => {
             return err.response;
           });
-          console.log(">response 2 >>",response2);
+          // console.log(">response 2 >>",response2);
           if (response2.status !=200) {
             return res.status(response2.status).json(response2.data);
           }

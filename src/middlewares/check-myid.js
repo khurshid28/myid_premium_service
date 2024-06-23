@@ -30,12 +30,12 @@ const {
           }
         );
       });
-     console.log("myIdData :" ,myIdData);
+    //  console.log("myIdData :" ,myIdData);
       if (!myIdData) {
         return next();
       }
   
-      console.log("my id ---", myIdData);
+      // console.log("my id ---", myIdData);
       return res.status(200).json({
         response_id: myIdData.response_id,
         comparison_value: myIdData.comparison_value,
