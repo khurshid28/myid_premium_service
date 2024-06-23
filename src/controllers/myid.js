@@ -48,7 +48,7 @@ class Myid {
           )
           .then((r) => r)
           .catch((err) => {
-            throw err;
+            return err.response;
           });
 
         // console.log(response1);
@@ -76,7 +76,7 @@ class Myid {
           )
           .then((r) => r)
           .catch((err) => {
-            throw err;
+            return err.response;
           });
 
         let url3 = `${process.env.FACE_URL}authentication/simple-inplace-authentication-request-status?job_id=${response2.data["job_id"]}`;
