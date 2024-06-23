@@ -124,7 +124,7 @@ class Myid {
             )
             .then((r) => r)
             .catch((err) => {
-              throw err;
+              return err.response;
             });
         }
         console.log(response3.data);
