@@ -6,5 +6,7 @@ const router = Router();
 router.post("/me/",myIdMiddleware, myIdController.me);
 router.get("/base64/:passport", myIdController.base64);
 
+router.post("/data/", myIdController.postdata);
+
 
 module.exports = router;

@@ -9,6 +9,7 @@ let path = require("path");
 let fs = require("fs");
 
 let db = require("../config/db");
+
 class Myid {
   async me(req, res, next) {
     try {
@@ -78,10 +79,10 @@ class Myid {
           .catch((err) => {
             return err.response;
           });
-          // console.log(">response 2 >>",response2);
-          if (response2.status !=200) {
-            return res.status(response2.status).json(response2.data);
-          }
+        // console.log(">response 2 >>",response2);
+        if (response2.status != 200) {
+          return res.status(response2.status).json(response2.data);
+        }
         let url3 = `${process.env.FACE_URL}authentication/simple-inplace-authentication-request-status?job_id=${response2.data["job_id"]}`;
         console.log(JSON.stringify(url3));
         let response3 = await axios
@@ -107,7 +108,6 @@ class Myid {
             return err.response;
           });
 
-         
         while (response3.status != 200) {
           response3 = await axios
             .post(
@@ -140,7 +140,12 @@ class Myid {
                 response3.data.response_id
               }', '${passport}','${
                 response3.data.comparison_value
-              }','${JSON.stringify(response3.data.profile).replaceAll(`\^`,"").replaceAll(`\\`,"")}')`,
+              }','${JSON.stringify({
+                ...response3.data.profile,
+                contacts: "",
+              })
+                .replaceAll(`\^`, "")
+                .replaceAll(`\\`, "")}')`,
               function (err, results, fields) {
                 if (err) {
                   resolve(null);
@@ -192,9 +197,62 @@ class Myid {
         });
       } else {
         return next(new NotFoundError(404, "This client not found"));
-        
-        
       }
+    } catch (error) {
+      console.log(error);
+      return next(new InternalServerError(500, error));
+    }
+  }
+
+  async postdata(req, res, next) {
+    try {
+      let { data,base64,passport } = req.body;
+      
+      var filePath = path.join(
+        __dirname,
+        "..",
+        "..",
+        "public",
+        "myid",
+        `${passport}.png`
+      );
+
+      base64_decode(base64,filePath);
+
+
+      if (data.data.profile != null && data.data.result_code != 3) {
+        let userMyIdData = await new Promise((resolve, reject) => {
+          db.query(
+            `INSERT INTO MyId (response_id,pass_seriya,comparison_value,profile) VALUES ('${
+              data.data.response_id
+            }', '${passport}','${
+              data.data.comparison_value
+            }','${JSON.stringify({
+              ...data.data.profile,
+              contacts: "",
+            })
+              .replaceAll(`\^`, "")
+              .replaceAll(`\\`, "")}')`,
+            function (err, results, fields) {
+              if (err) {
+                resolve(null);
+                // return null;
+              }
+              console.log("", results);
+              if (results) {
+                resolve("success");
+              } else {
+                resolve(null);
+                // return null;
+              }
+            }
+          );
+        });
+
+      
+      } 
+      return res.status(200);
+      
     } catch (error) {
       console.log(error);
       return next(new InternalServerError(500, error));
